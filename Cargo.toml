@@ -7,6 +7,7 @@ authors = ["Kaspar Schleiser <kaspar@schleiser.de>"]
 repository = "https://github.com/kaspar030/please"
 readme = "README.md"
 license = "Apache-2.0"
+include = ["src/**/*", "LICENSE", "README.md"]
 
 [dependencies]
 anyhow = "1.0.71"
