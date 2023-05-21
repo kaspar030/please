@@ -1,0 +1,11 @@
+[package]
+name = "please"
+version = "0.1.0"
+edition = "2021"
+description = "Command line LLM query tool"
+
+[dependencies]
+camino = "1.1.4"
+clap = { version = "4.3.0", features = ["cargo", "env"] }
+openai = "1.0.0-alpha.9"
+tokio = "1.28.1"
