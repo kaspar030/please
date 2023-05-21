@@ -3,6 +3,8 @@
 Welcome to **please**, a powerful and easy-to-use Command Line Interface (CLI) tool
 specifically designed for querying Language Models (LLMs).
 
+**please** currently supports OpenAI's gpt-3.5-turbo and gpt-4.
+
 It has two main modes of operation:
 
 1. Ask an LLM how to perform a specific task using CLI
@@ -31,10 +33,17 @@ ffmpeg -i test.m4a -acodec libmp3lame -ab 192k test.mp3
 In this mode, the piped input is passed to the LLM, together with the
 **please** command line as instruction.
 
+This can be used from inside (Neo)Vim: just mark some text with v/V, then pipe
+through **please** like "!please complete this".
+
 # Installation
 
     cargo install --git https://github.com/kaspar030/please
 
+Make sure to set your OpenAI API key:
+
+    export OPENAI_KEY=sk-....
+
 # License
 
-laze is licensed under the terms of the Apache License (Version 2.0).
+please is licensed under the terms of the Apache License (Version 2.0).
