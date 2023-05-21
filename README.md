@@ -1,17 +1,17 @@
 # Introduction
 
 Welcome to **please**, a powerful and easy-to-use Command Line Interface (CLI) tool
-specifically designed for querying Language Models (LLMs).
-
-# Usage
+to assist working on the command line.
 
 **please** currently supports OpenAI's gpt-3.5-turbo and gpt-4.
+
+# Usage
 
 It has two main modes of operation:
 
 1. Ask an LLM how to perform a specific task using CLI
 
-    please \<some task description\>
+        please \<some task description\>
 
 In this mode, the LLM is asked to return shell command(s) that perform the given
 task.
@@ -30,7 +30,7 @@ ffmpeg -i test.m4a -acodec libmp3lame -ab 192k test.mp3
 
 2. Ask an LLM to change some piped input according to a given prompt
 
-    echo "cat dog car house mouse" | please filter animals
+        echo "cat dog car house mouse" | please filter animals
 
 In this mode, the piped input is passed to the LLM, together with the
 **please** command line as instruction.
