@@ -1,8 +1,4 @@
-use openai::{
-    chat::{ChatCompletion, ChatCompletionMessage, ChatCompletionMessageRole},
-    completions::Completion,
-    set_key,
-};
+use openai::chat::{ChatCompletion, ChatCompletionMessage, ChatCompletionMessageRole};
 
 mod cli;
 
@@ -21,7 +17,7 @@ async fn main() {
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
         content:
-            "You are an assistant returning Linux shell commands that accomplish the following task. Don't add explainations or notes."
+            "You are an assistant returning Linux shell commands that accomplish the following task. Don't add explanations or notes."
                 .to_string(),
         name: None,
     }];
