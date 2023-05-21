@@ -2,7 +2,11 @@
 name = "please"
 version = "0.1.0"
 edition = "2021"
-description = "Command line LLM query tool"
+description = "Command line LLM query tool an assistant"
+authors = ["Kaspar Schleiser <kaspar@schleiser.de>"]
+repository = "https://github.com/kaspar030/please"
+readme = "README.md"
+license = "Apache-2.0"
 
 [dependencies]
 anyhow = "1.0.71"
