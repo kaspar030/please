@@ -3,6 +3,8 @@
 Welcome to **please**, a powerful and easy-to-use Command Line Interface (CLI) tool
 specifically designed for querying Language Models (LLMs).
 
+# Usage
+
 **please** currently supports OpenAI's gpt-3.5-turbo and gpt-4.
 
 It has two main modes of operation:
@@ -35,6 +37,20 @@ In this mode, the piped input is passed to the LLM, together with the
 
 This can be used from inside (Neo)Vim: just mark some text with v/V, then pipe
 through **please** like "!please complete this".
+
+**NOTE** all piped in data and every argument to **please** is sent to the OpenAI
+API endpoint!
+
+**please** currently defaults to using `gpt-3.5-turbo`. To make it use `gpt-4`, 
+use the `--model gpt-4` argument or (better) set `PLEASE_MODEL=gpt-4` alongside
+`OPENAI_KEY`.
+
+How would you make that permanent?
+
+```
+> please set PLEASE_MODEL=gpt-4 for every new shell
+echo 'export PLEASE_MODEL=gpt-4' >> ~/.bashrc && source ~/.bashrc
+```
 
 # Installation
 

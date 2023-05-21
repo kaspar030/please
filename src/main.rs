@@ -2,10 +2,22 @@ use std::error::Error;
 use std::io::Read;
 
 use anyhow::anyhow;
-use clap::ArgMatches;
+use clap::{ArgMatches, ValueEnum};
+
 use openai::chat::{ChatCompletion, ChatCompletionMessage, ChatCompletionMessageRole};
 
 mod cli;
+
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Default)]
+pub(crate) enum Model {
+    /// Use gpt-3.5-turbo
+    #[default]
+    #[clap(name = "gpt-3.5-turbo", alias = "gpt-3")]
+    GPT3_5,
+    /// Use gpt-4
+    #[clap(name = "gpt-4")]
+    GPT4,
+}
 
 #[tokio::main]
 async fn main() {
@@ -26,6 +38,10 @@ async fn main() {
 }
 
 async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
+    let model: Model = matches
+        .get_one::<Model>("model")
+        .map_or_else(Model::default, |m| *m);
+
     let task: Vec<String> = matches
         .get_many("task")
         .map_or_else(std::vec::Vec::new, |v| v.cloned().collect());
@@ -40,7 +56,7 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
             return Err(anyhow!("running on tty, no task given").into());
         }
         prompt = "You are an assistant returning Linux shell commands that accomplish the following task. Don't add explanations or notes.".to_string();
-        result = openai_request(&prompt, &task).await?;
+        result = openai_request(model, &prompt, &task).await?;
     } else {
         if task.is_empty() {
             task.push_str("Please fix this.");
@@ -52,14 +68,14 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 
         std::io::stdin().read_to_string(&mut buffer).unwrap();
 
-        result = openai_request(&prompt, &buffer).await?;
+        result = openai_request(model, &prompt, &buffer).await?;
     }
 
     println!("{}", result);
     Ok(())
 }
 
-async fn openai_request(prompt: &str, task: &str) -> Result<String, Box<dyn Error>> {
+async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<String, Box<dyn Error>> {
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
         content: prompt.to_string(),
@@ -72,9 +88,12 @@ async fn openai_request(prompt: &str, task: &str) -> Result<String, Box<dyn Erro
         name: None,
     });
 
-    let chat_completion = ChatCompletion::builder("gpt-4", messages.clone())
-        .create()
-        .await??;
+    let chat_completion = ChatCompletion::builder(
+        model.to_possible_value().unwrap().get_name(),
+        messages.clone(),
+    )
+    .create()
+    .await??;
 
     let response = chat_completion
         .choices
