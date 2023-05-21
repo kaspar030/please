@@ -11,7 +11,7 @@ It has two main modes of operation:
 
 1. Ask an LLM how to perform a specific task using CLI
 
-        please \<some task description\>
+        please <some task description>
 
 In this mode, the LLM is asked to return shell command(s) that perform the given
 task.
