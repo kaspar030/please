@@ -6,8 +6,8 @@ use openai::{
 
 mod cli;
 
-#[tokio::xmainx]
-async fn xmainx() {
+#[tokio::main]
+async fn main() {
     let m = cli::clap().get_matches();
 
     openai::set_key(m.get_one::<String>("apikey").unwrap().clone());
