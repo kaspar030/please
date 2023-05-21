@@ -12,7 +12,6 @@ pub fn clap() -> clap::Command {
         .version(crate_version!())
         .author(crate_authors!("\n"))
         .about(crate_description!())
-        .subcommand_negates_reqs(true)
         .arg(
             Arg::new("apikey")
                 .short('k')
@@ -24,6 +23,5 @@ pub fn clap() -> clap::Command {
                 .value_parser(clap::value_parser!(String))
                 .num_args(1),
         )
-        .arg(task().required(true))
-        .subcommand(Command::new("complete").arg(task()))
+        .arg(task())
 }

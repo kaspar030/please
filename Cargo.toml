@@ -5,6 +5,8 @@ edition = "2021"
 description = "Command line LLM query tool"
 
 [dependencies]
+anyhow = "1.0.71"
+atty = "0.2.14"
 camino = "1.1.4"
 clap = { version = "4.3.0", features = ["cargo", "env"] }
 openai = "1.0.0-alpha.9"
