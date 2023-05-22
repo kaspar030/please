@@ -1,10 +1,13 @@
 use std::error::Error;
-use std::io::Read;
+use std::io::{stdin, stdout, Read, Write};
 
 use anyhow::anyhow;
 use clap::{ArgMatches, ValueEnum};
 
-use openai::chat::{ChatCompletion, ChatCompletionMessage, ChatCompletionMessageRole};
+use openai::chat::{
+    ChatCompletion, ChatCompletionDelta, ChatCompletionMessage, ChatCompletionMessageRole,
+};
+use tokio::sync::mpsc::Receiver;
 
 mod cli;
 
@@ -50,13 +53,12 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 
     let prompt: String;
 
-    let result;
     if atty::is(atty::Stream::Stdin) {
         if task.is_empty() {
             return Err(anyhow!("running on tty, no task given").into());
         }
         prompt = "You are an assistant returning Linux shell commands that accomplish the following task. Don't add explanations or notes.".to_string();
-        result = openai_request(model, &prompt, &task).await?;
+        openai_request(model, &prompt, &task).await?;
     } else {
         if task.is_empty() {
             task.push_str("Please fix this.");
@@ -68,14 +70,13 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 
         std::io::stdin().read_to_string(&mut buffer).unwrap();
 
-        result = openai_request(model, &prompt, &buffer).await?;
+        openai_request(model, &prompt, &buffer).await?;
     }
 
-    println!("{}", result);
     Ok(())
 }
 
-async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<String, Box<dyn Error>> {
+async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<(), Box<dyn Error>> {
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
         content: prompt.to_string(),
@@ -88,22 +89,36 @@ async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<String
         name: None,
     });
 
-    let chat_completion = ChatCompletion::builder(
+    let chat_stream = ChatCompletionDelta::builder(
         model.to_possible_value().unwrap().get_name(),
         messages.clone(),
     )
-    .create()
-    .await??;
+    .create_stream()
+    .await?;
 
-    let response = chat_completion
-        .choices
-        .first()
-        .ok_or("No response received")?
-        .message
-        .clone()
-        .content
-        .trim()
-        .to_string();
+    listen_for_tokens(chat_stream).await;
+    Ok(())
+}
 
-    Ok(response)
+async fn listen_for_tokens(mut chat_stream: Receiver<ChatCompletionDelta>) -> ChatCompletion {
+    let mut merged: Option<ChatCompletionDelta> = None;
+    while let Some(delta) = chat_stream.recv().await {
+        let choice = &delta.choices[0];
+        if let Some(content) = &choice.delta.content {
+            print!("{}", content);
+        }
+        if choice.finish_reason.is_some() {
+            // The message being streamed has been fully received.
+            println!();
+        }
+        stdout().flush().unwrap();
+        // Merge completion into accrued.
+        match merged.as_mut() {
+            Some(c) => {
+                c.merge(delta).unwrap();
+            }
+            None => merged = Some(delta),
+        };
+    }
+    merged.unwrap().into()
 }
