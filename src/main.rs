@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::io::{stdin, stdout, Read, Write};
+use std::io::{stdout, Read, Write};
 
 use anyhow::anyhow;
 use clap::{ArgMatches, ValueEnum};

@@ -1,5 +1,5 @@
 [package]
-name = "please"
+name = "please-cli"
 version = "0.1.0"
 edition = "2021"
 description = "Command line LLM query tool an assistant"
@@ -16,3 +16,7 @@ camino = "1.1.4"
 clap = { version = "4.3.0", features = ["cargo", "env", "derive"] }
 openai = "1.0.0-alpha.9"
 tokio = "1.28.1"
+
+[[bin]]
+name = "please"
+path = "src/main.rs"
