@@ -722,11 +722,12 @@ checksum = "b7e5500299e16ebb147ae15a00a942af264cf3688f47923b8fc2cd5858f23ad3"
 
 [[package]]
 name = "openai"
-version = "1.0.0-alpha.10"
+version = "1.0.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2dc94e95e0759df8fee799923d0d1c91fc858ab5ebdd05ae4af12dec2ce44d96"
+checksum = "dc75d998e722f60396519fd73ea5fecbf2870e6e263f20bb7290694014bef5b0"
 dependencies = [
  "anyhow",
+ "bytes",
  "derive_builder",
  "futures-util",
  "reqwest",
