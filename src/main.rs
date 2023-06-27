@@ -52,13 +52,14 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
     let mut task = task.join(" ");
 
     let prompt: String;
+    let temperature = *matches.get_one("temp").unwrap();
 
     if atty::is(atty::Stream::Stdin) {
         if task.is_empty() {
             return Err(anyhow!("running on tty, no task given").into());
         }
         prompt = "You are an assistant returning Linux shell commands that accomplish the following task. Don't add explanations or notes.".to_string();
-        openai_request(model, &prompt, &task).await?;
+        openai_request(model, &prompt, &task, temperature).await?;
     } else {
         if task.is_empty() {
             task.push_str("Please fix this.");
@@ -70,13 +71,18 @@ async fn handle_task(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 
         std::io::stdin().read_to_string(&mut buffer).unwrap();
 
-        openai_request(model, &prompt, &buffer).await?;
+        openai_request(model, &prompt, &buffer, temperature).await?;
     }
 
     Ok(())
 }
 
-async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<(), Box<dyn Error>> {
+async fn openai_request(
+    model: Model,
+    prompt: &str,
+    task: &str,
+    temperature: f32,
+) -> Result<(), Box<dyn Error>> {
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
         content: prompt.to_string(),
@@ -93,6 +99,7 @@ async fn openai_request(model: Model, prompt: &str, task: &str) -> Result<(), Bo
         model.to_possible_value().unwrap().get_name(),
         messages.clone(),
     )
+    .temperature(temperature)
     .create_stream()
     .await?;
 
