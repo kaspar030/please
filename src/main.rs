@@ -85,14 +85,16 @@ async fn openai_request(
 ) -> Result<(), Box<dyn Error>> {
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
-        content: prompt.to_string(),
+        content: Some(prompt.to_string()),
+        function_call: None,
         name: None,
     }];
 
     messages.push(ChatCompletionMessage {
         role: ChatCompletionMessageRole::User,
-        content: task.to_string(),
+        content: Some(task.to_string()),
         name: None,
+        function_call: None,
     });
 
     let chat_stream = ChatCompletionDelta::builder(
