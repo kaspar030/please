@@ -1,6 +1,6 @@
 [package]
 name = "please-cli"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Command line LLM query tool an assistant"
 authors = ["Kaspar Schleiser <kaspar@schleiser.de>"]
