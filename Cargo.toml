@@ -14,7 +14,7 @@ anyhow = "1.0.71"
 atty = "0.2.14"
 camino = "1.1.4"
 clap = { version = "4.3.10", features = ["cargo", "env", "derive"] }
-openai = "1.0.0-alpha.12"
+openai = "1.0.0-alpha.13"
 tokio = "1.29.1"
 
 [[bin]]
