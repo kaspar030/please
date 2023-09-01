@@ -13,7 +13,7 @@ include = ["src/**/*", "LICENSE", "README.md"]
 anyhow = "1.0.75"
 atty = "0.2.14"
 camino = "1.1.6"
-clap = { version = "4.4.1", features = ["cargo", "env", "derive"] }
+clap = { version = "4.4.2", features = ["cargo", "env", "derive"] }
 openai = "1.0.0-alpha.13"
 tokio = "1.32.0"
 
