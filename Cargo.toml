@@ -12,7 +12,7 @@ include = ["src/**/*", "LICENSE", "README.md"]
 [dependencies]
 anyhow = "1.0.86"
 atty = "0.2.14"
-camino = "1.1.8"
+camino = "1.1.9"
 clap = { version = "4.5.16", features = ["cargo", "env", "derive"] }
 openai = "1.0.0-alpha.15"
 tokio = "1.38.1"
