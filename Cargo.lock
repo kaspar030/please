@@ -717,9 +717,9 @@ checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
 name = "openai"
-version = "1.0.0-alpha.17"
+version = "1.0.0-alpha.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d445cece0afd5dd1d6030e2fa981658c05ffe596697822152ef9a6952ffc2525"
+checksum = "05d2a4b159698825541b3e4cd6bbc773de387b0f329f3e86595baff15e72a1b1"
 dependencies = [
  "anyhow",
  "bytes",
