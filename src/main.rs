@@ -22,6 +22,12 @@ pub(crate) enum Model {
     /// Use gpt-4
     #[clap(name = "gpt-4")]
     GPT4,
+    /// Use gpt-4o
+    #[clap(name = "gpt-4o")]
+    GPT4o,
+    /// Use gpt-4o-mini
+    #[clap(name = "gpt-4o-mini")]
+    GPT4oMini,
 }
 
 #[tokio::main]
