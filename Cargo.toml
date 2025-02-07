@@ -1,8 +1,8 @@
 [package]
 name = "please-cli"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-description = "Command line LLM query tool an assistant"
+description = "Command line LLM query tool and assistant"
 authors = ["Kaspar Schleiser <kaspar@schleiser.de>"]
 repository = "https://github.com/kaspar030/please"
 readme = "README.md"
@@ -14,7 +14,7 @@ anyhow = "1.0.95"
 atty = "0.2.14"
 camino = "1.1.9"
 clap = { version = "4.5.28", features = ["cargo", "env", "derive"] }
-openai = "1.0.0-alpha.17"
+openai = "1.0.0-alpha.19"
 tokio = "1.43.0"
 
 [[bin]]

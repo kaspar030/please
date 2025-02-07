@@ -1,11 +1,13 @@
+use std::env;
 use std::error::Error;
 use std::io::{stdout, Read, Write};
 
 use anyhow::anyhow;
 use clap::{ArgMatches, ValueEnum};
 
-use openai::chat::{
-    ChatCompletion, ChatCompletionDelta, ChatCompletionMessage, ChatCompletionMessageRole,
+use openai::{
+    chat::{ChatCompletion, ChatCompletionDelta, ChatCompletionMessage, ChatCompletionMessageRole},
+    Credentials,
 };
 use tokio::sync::mpsc::Receiver;
 
@@ -26,7 +28,9 @@ pub(crate) enum Model {
 async fn main() {
     let matches = cli::clap().get_matches();
 
-    openai::set_key(matches.get_one::<String>("apikey").unwrap().clone());
+    if let Some(apikey) = matches.get_one::<String>("apikey") {
+        env::set_var("OPENAPI_KEY", apikey);
+    }
 
     if let Err(e) = handle_task(&matches).await {
         eprintln!("please: error: {e:#}");
@@ -83,11 +87,15 @@ async fn openai_request(
     task: &str,
     temperature: f32,
 ) -> Result<(), Box<dyn Error>> {
+    let credentials = Credentials::from_env();
+
     let mut messages = vec![ChatCompletionMessage {
         role: ChatCompletionMessageRole::System,
         content: Some(prompt.to_string()),
         function_call: None,
         name: None,
+        tool_call_id: None,
+        tool_calls: Vec::new(),
     }];
 
     messages.push(ChatCompletionMessage {
@@ -95,12 +103,15 @@ async fn openai_request(
         content: Some(task.to_string()),
         name: None,
         function_call: None,
+        tool_call_id: None,
+        tool_calls: Vec::new(),
     });
 
     let chat_stream = ChatCompletionDelta::builder(
         model.to_possible_value().unwrap().get_name(),
         messages.clone(),
     )
+    .credentials(credentials)
     .temperature(temperature)
     .create_stream()
     .await?;
