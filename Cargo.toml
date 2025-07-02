@@ -15,7 +15,7 @@ atty = "0.2.14"
 camino = "1.1.10"
 clap = { version = "4.5.40", features = ["cargo", "env", "derive"] }
 openai = "1.0.0-alpha.19"
-tokio = "1.45.1"
+tokio = "1.46.0"
 
 [[bin]]
 name = "please"
