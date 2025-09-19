@@ -10,7 +10,7 @@ license = "Apache-2.0"
 include = ["src/**/*", "LICENSE", "README.md"]
 
 [dependencies]
-anyhow = "1.0.99"
+anyhow = "1.0.100"
 atty = "0.2.14"
 camino = "1.2.0"
 clap = { version = "4.5.47", features = ["cargo", "env", "derive"] }
