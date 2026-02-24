@@ -101,7 +101,7 @@ async fn openai_request(
         function_call: None,
         name: None,
         tool_call_id: None,
-        tool_calls: Vec::new(),
+        tool_calls: Some(Vec::new()),
     }];
 
     messages.push(ChatCompletionMessage {
@@ -110,7 +110,7 @@ async fn openai_request(
         name: None,
         function_call: None,
         tool_call_id: None,
-        tool_calls: Vec::new(),
+        tool_calls: Some(Vec::new()),
     });
 
     let chat_stream = ChatCompletionDelta::builder(
