@@ -60,6 +60,10 @@ Make sure to set your OpenAI API key:
 
     export OPENAI_KEY=sk-....
 
+Optionally, set a custom API base URL (e.g., for compatible providers):
+
+    export OPENAI_BASE_URL=https://api.openai.com/v1/
+
 # License
 
 please is licensed under the terms of the Apache License (Version 2.0).

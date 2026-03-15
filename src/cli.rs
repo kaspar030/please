@@ -51,6 +51,15 @@ pub fn clap() -> clap::Command {
                 .value_parser(clap::builder::ValueParser::new(parse_f32_0_1)),
         )
         .arg(
+            Arg::new("openai-base-url")
+                .short('u')
+                .long("openai-base-url")
+                .help("OpenAI API base URL")
+                .env("OPENAI_BASE_URL")
+                .default_value("https://api.openai.com/v1/")
+                .value_parser(value_parser!(String)),
+        )
+        .arg(
             Arg::new("task")
                 .trailing_var_arg(true)
                 .allow_hyphen_values(true)

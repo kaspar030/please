@@ -18,7 +18,11 @@ async fn main() {
     let matches = cli::clap().get_matches();
 
     if let Some(apikey) = matches.get_one::<String>("apikey") {
-        env::set_var("OPENAPI_KEY", apikey);
+        env::set_var("OPENAI_KEY", apikey);
+    }
+
+    if let Some(base_url) = matches.get_one::<String>("openai-base-url") {
+        env::set_var("OPENAI_BASE_URL", base_url);
     }
 
     if let Err(e) = handle_task(&matches).await {
