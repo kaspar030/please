@@ -29,7 +29,7 @@ pub fn clap() -> clap::Command {
                 .env("OPENAI_KEY")
                 .hide_env_values(true)
                 .required(true)
-                .value_parser(clap::value_parser!(String))
+                .value_parser(value_parser!(String))
                 .num_args(1),
         )
         .arg(
@@ -38,7 +38,8 @@ pub fn clap() -> clap::Command {
                 .long("model")
                 .help("which LLM to use")
                 .env("PLEASE_MODEL")
-                .value_parser(value_parser!(super::Model)),
+                .default_value("gpt-5")
+                .value_parser(value_parser!(String)),
         )
         .arg(
             Arg::new("temp")
